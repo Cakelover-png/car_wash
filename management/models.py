@@ -53,7 +53,7 @@ class Car(models.Model):
     car_brand = models.CharField(max_length=50, blank=True, null=True)
     car_size = models.FloatField(blank=True, null=True)  # in m^3
     leather_seats = models.BooleanField(default=False)
-    license_plate = models.CharField(max_length=30, unique=True)
+    license_plate = models.CharField(max_length=30)
 
     class Meta:
         verbose_name = _('Car')

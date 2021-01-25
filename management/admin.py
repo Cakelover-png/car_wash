@@ -6,22 +6,16 @@ admin.site.register(Location)
 admin.site.register(CarWash)
 
 
+@admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ("__str__", 'job_position')
 
 
-admin.site.register(Employee, EmployeeAdmin)
-
-
+@admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = ("__str__", 'leather_seats')
 
 
-admin.site.register(Car, CarAdmin)
-
-
+@admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
-
-
-admin.site.register(Request, RequestAdmin)
