@@ -53,17 +53,14 @@ class Car(models.Model):
     car_brand = models.CharField(max_length=50, blank=True, null=True)
     car_size = models.FloatField(blank=True, null=True)  # in m^3
     leather_seats = models.BooleanField(default=False)
-    license_plate = models.CharField(max_length=30)
+    license_plate = models.CharField(max_length=30, unique=True)
 
     class Meta:
         verbose_name = _('Car')
         verbose_name_plural = _('Cars')
 
     def __str__(self):
-        if self.car_brand:
-            return f"{self.car_brand} | {self.license_plate}"
-        else:
-            return f"{self.license_plate}"
+        return f"{self.license_plate}"
 
 
 class Request(models.Model):
@@ -71,16 +68,14 @@ class Request(models.Model):
     car = models.ForeignKey(to='management.Car', on_delete=models.CASCADE)
     payment_type = models.IntegerField(choices=PAYMENT_TYPES)
     created = models.DateTimeField(auto_now_add=True)
-    waiting_list_id = models.PositiveIntegerField(blank=True, null=True)
     finish_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        ordering = ['waiting_list_id']
         verbose_name = _('Request')
         verbose_name_plural = _('Requests')
 
     def __str__(self):
-        if self.car.car_brand:
-            return f"id: {self.waiting_list_id} | {self.car.__str__()}"
+        if self.finish_time:
+            return f"{self.finish_time} | {self.car.license_plate}"
         else:
-            return f"{self.waiting_list_id} | {self.car.license_plate}"
+            return f"{'not finished yet'} | {self.car.license_plate}"
