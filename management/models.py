@@ -1,5 +1,5 @@
 from django.db import models
-from management.choices import JOBS, PAYMENT_TYPES, ORGANIZATION_TYPES
+from management.choices import CAR_TYPES, PAYMENT_TYPES, ORGANIZATION_TYPES
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -25,34 +25,44 @@ class CarWash(models.Model):
     creation_time = models.DateTimeField()
 
     class Meta:
-        verbose_name = _('CarWash')
-        verbose_name_plural = _('CarWashes')
+        verbose_name = _('Car wash')
+        verbose_name_plural = _('Car washes')
 
     def __str__(self):
         return self.full_name
 
 
-class Employee(models.Model):
+class Washer(models.Model):
     car_wash = models.ForeignKey(to='management.CarWash', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     personal_id = models.CharField(max_length=11, unique=True)
-    job_position = models.IntegerField(choices=JOBS)
-    salary = models.PositiveIntegerField()
+    payment = models.PositiveIntegerField()
 
     class Meta:
         ordering = ['last_name']
-        verbose_name = _('Employee')
-        verbose_name_plural = _('Employees')
+        verbose_name = _('Washer')
+        verbose_name_plural = _('Washers')
 
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
 
 
+class CarType(models.Model):
+    car_wash = models.ForeignKey(to='management.CarWash', on_delete=models.CASCADE)
+    type = models.IntegerField(choices=CAR_TYPES)
+    price = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name = _('Car type')
+        verbose_name_plural = _('Car types')
+
+    def __str__(self):
+        return f"{CAR_TYPES[self.type-1][1]}"
+
+
 class Car(models.Model):
-    car_brand = models.CharField(max_length=50, blank=True, null=True)
-    car_size = models.FloatField(blank=True, null=True)  # in m^3
-    leather_seats = models.BooleanField(default=False)
+    car_type = models.ForeignKey(to='management.CarType', on_delete=models.PROTECT)
     license_plate = models.CharField(max_length=30, unique=True)
 
     class Meta:
@@ -63,10 +73,11 @@ class Car(models.Model):
         return f"{self.license_plate}"
 
 
-class Request(models.Model):
-    employee = models.ForeignKey(to='management.employee', on_delete=models.PROTECT)
+class Order(models.Model):
+    Washer = models.ForeignKey(to='management.Washer', on_delete=models.PROTECT)
     car = models.ForeignKey(to='management.Car', on_delete=models.CASCADE)
-    payment_type = models.IntegerField(choices=PAYMENT_TYPES)
+    price = models.PositiveIntegerField(blank=True, null=True)
+    payment_type = models.IntegerField(choices=PAYMENT_TYPES)  # for decoration
     created = models.DateTimeField(auto_now_add=True)
     finish_time = models.DateTimeField(blank=True, null=True)
 
@@ -79,3 +90,7 @@ class Request(models.Model):
             return f"{self.finish_time} | {self.car.license_plate}"
         else:
             return f"{'not finished yet'} | {self.car.license_plate}"
+
+    def save(self, *args, **kwargs):
+        self.price = self.car.car_type.price
+        super(Order, self).save(*args, **kwargs)
