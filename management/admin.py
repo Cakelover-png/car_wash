@@ -30,4 +30,4 @@ class CarAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('car', 'finish_time')
-    readonly_fields = ('created',)
+    readonly_fields = ('created', 'price')

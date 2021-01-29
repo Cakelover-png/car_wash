@@ -37,7 +37,7 @@ class Washer(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     personal_id = models.CharField(max_length=11, unique=True)
-    payment = models.PositiveIntegerField()
+    payment = models.DecimalField(default=0, max_digits=6, decimal_places=2)
 
     class Meta:
         ordering = ['last_name']
@@ -51,14 +51,14 @@ class Washer(models.Model):
 class CarType(models.Model):
     car_wash = models.ForeignKey(to='management.CarWash', on_delete=models.CASCADE)
     type = models.IntegerField(choices=CAR_TYPES)
-    price = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=4, decimal_places=2)
 
     class Meta:
         verbose_name = _('Car type')
         verbose_name_plural = _('Car types')
 
     def __str__(self):
-        return f"{CAR_TYPES[self.type-1][1]}"
+        return f"{CAR_TYPES[self.type-1][1]} | {self.car_wash.full_name}"
 
 
 class Car(models.Model):
@@ -74,16 +74,16 @@ class Car(models.Model):
 
 
 class Order(models.Model):
-    Washer = models.ForeignKey(to='management.Washer', on_delete=models.PROTECT)
+    washer = models.ForeignKey(to='management.Washer', on_delete=models.PROTECT)
     car = models.ForeignKey(to='management.Car', on_delete=models.CASCADE)
-    price = models.PositiveIntegerField(blank=True, null=True)
+    price = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
     payment_type = models.IntegerField(choices=PAYMENT_TYPES)  # for decoration
     created = models.DateTimeField(auto_now_add=True)
     finish_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        verbose_name = _('Request')
-        verbose_name_plural = _('Requests')
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
 
     def __str__(self):
         if self.finish_time:
