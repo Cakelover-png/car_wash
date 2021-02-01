@@ -35,14 +35,14 @@ def washers(request, cw_pk):
     washers_dict = {}
 
     for washer in washers:
-        weakly_finished = washer.order_set.filter(
-            finish_time__gt=timezone.now()-datetime.timedelta(days=7))
-        monthly_finished = washer.order_set.filter(
-            finish_time__gt=timezone.now()-datetime.timedelta(days=30))
-        yearly_finished = washer.order_set.filter(
-            finish_time__gt=timezone.now()-datetime.timedelta(days=365))
         all_finished = washer.order_set.filter(
             finish_time__isnull=False)
+        yearly_finished = all_finished.filter(
+            finish_time__gt=timezone.now()-datetime.timedelta(days=365))
+        monthly_finished = yearly_finished.filter(
+            finish_time__gt=timezone.now()-datetime.timedelta(days=30))
+        weakly_finished = monthly_finished.filter(
+            finish_time__gt=timezone.now()-datetime.timedelta(days=7))
         weakly_pay = weakly_finished.aggregate(Sum('price'))['price__sum']
         monthly_pay = monthly_finished.aggregate(Sum('price'))['price__sum']
         yearly_pay = yearly_finished.aggregate(Sum('price'))['price__sum']
