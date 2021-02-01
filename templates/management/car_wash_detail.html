@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="collection with-header">
+    <li class="collection-header center-align"><h4>{{car_wash.full_name}}</h4></li>
+    <li class="collection-item center-align">Location
+        <ul>
+            <li>City: {{car_wash.location.city}}</li>
+            <li>Street: {{car_wash.location.street_adress}}</li>
+            <li>Zip Code: {{car_wash.location.zip_code}}</li>
+        </ul>
+    </li>
+    <li class="collection-item center-align">Tax id: {{car_wash.tax_id}}</li>
+    <li class="collection-item center-align">Company creation time: {{car_wash.creation_time|date:'M d Y'|upper}}</li>
+
+</ul>
+
+<h4 class='center-align'>Company totally washed {{washed_cars}} car{{washed_cars|pluralize}}</h4>
+
+{% endblock %}

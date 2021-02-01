@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load index %}
+
+{% block content %}
+
+<style>
+#personal_info{
+    font-size: 20px;
+    font-weight: bold;
+}
+</style>
+
+
+<div class='container'>
+    {% for washer in washers %}
+        {% with washer_info=washers_dict|index:washer.id %}
+        {% if forloop.counter0|divisibleby:"2" %}
+            <div class='row'>
+        {% endif %}
+            <div class='col s12 m6'>
+                <div class="card">
+                   <div class="card-content">
+                     <ul class='center-align'>
+                         <li id='personal_info'>{{washer.last_name}}</li>
+                         <li id='personal_info'>{{washer.first_name}}</li>
+                     </ul>
+                     <p>{% lorem 29 w %}</p>
+                   </div>
+                   <div class="card-tabs">
+                     <ul class="tabs tabs-fixed-width">
+                       <li class="tab"><a href="#weakly{{washer.id}}">Weakly</a></li>
+                       <li class="tab"><a href="#monthly{{washer.id}}">Monthly</a></li>
+                       <li class="tab"><a href="#yearly{{washer.id}}">Yearly</a></li>
+                       <li class="tab"><a href="#default{{washer.id}}">Default</a></li>
+                     </ul>
+                   </div>
+                   <div class="card-content grey lighten-4">
+                     <div id="weakly{{washer.id}}">
+                         <ul>
+                             <li>Washed {{washer_info.weakly_washed}} car{{washer_info.weakly_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer_info.weakly_pay}}</li>
+                         </ul>
+                     </div>
+                     <div id="monthly{{washer.id}}">
+                         <ul>
+                             <li>Washed {{washer_info.monthly_washed}} car{{washer_info.monthly_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer_info.monthly_pay}}</li>
+                         </ul>
+                     </div>
+                     <div id="yearly{{washer.id}}">
+                         <ul>
+                             <li>Washed {{washer_info.yearly_washed}} car{{washer_info.yearly_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer_info.yearly_pay}}</li>
+                         </ul>
+                     </div>
+                     <div id="default{{washer.id}}">
+                         <ul>
+                             <li>Washed {{washer_info.all_washed}} car{{washer_info.all_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer.payment}}</li>
+                         </ul>
+                     </div>
+                   </div>
+                </div>
+            </div>
+        {% if forloop.counter|divisibleby:"2" or forloop.last %}
+            </div>
+        {% endif %}
+        {% endwith %}
+    {% endfor %}
+</div>
+<script>
+  M.AutoInit();
+</script>
+
+{% endblock %}

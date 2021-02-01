@@ -29,5 +29,5 @@ class CarAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('car', 'finish_time')
+    list_display = ('__str__', 'washer')
     readonly_fields = ('created', 'price')

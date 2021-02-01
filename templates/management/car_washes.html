@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class='container'>
+{% for car_wash in car_washes%}
+    {% if forloop.counter0|divisibleby:"2" %}
+    <div class="row">
+    {% endif %}
+      <div class="col s12 m6">
+        <div class="card red darken-4">
+          <div class="card-content white-text">
+            <span class="card-title">{{car_wash.full_name}}</span>
+            <p>{% lorem 30 w %}</p>
+          </div>
+          <div class="card-action">
+            <a class="black-text" href="{% url 'cw_detail' car_wash.id %}">Get More Details</a>
+            <a class="black-text" href="{% url 'washers' car_wash.id %}">Washers</a>
+          </div>
+        </div>
+      </div>
+
+    {% if forloop.counter|divisibleby:"2" or forloop.last %}
+    </div>
+    {% endif %}
+{% endfor %}
+</div>
+
+{% endblock %}

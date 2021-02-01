@@ -45,7 +45,7 @@ class Washer(models.Model):
         verbose_name_plural = _('Washers')
 
     def __str__(self):
-        return f"{self.last_name} {self.first_name}"
+        return f"{self.last_name} {self.first_name} | {self.car_wash}"
 
 
 class CarType(models.Model):
@@ -63,14 +63,14 @@ class CarType(models.Model):
 
 class Car(models.Model):
     car_type = models.ForeignKey(to='management.CarType', on_delete=models.PROTECT)
-    license_plate = models.CharField(max_length=30, unique=True)
+    license_plate = models.CharField(max_length=30)
 
     class Meta:
         verbose_name = _('Car')
         verbose_name_plural = _('Cars')
 
     def __str__(self):
-        return f"{self.license_plate}"
+        return f"{self.license_plate} | {self.car_type}"
 
 
 class Order(models.Model):
@@ -87,10 +87,13 @@ class Order(models.Model):
 
     def __str__(self):
         if self.finish_time:
-            return f"{self.finish_time} | {self.car.license_plate}"
+            return f"Finished at: {self.finish_time} | {self.car.license_plate}"
         else:
-            return f"{'not finished yet'} | {self.car.license_plate}"
+            return f"{'Not finished yet'} | {self.car.license_plate}"
 
     def save(self, *args, **kwargs):
         self.price = self.car.car_type.price
+        if self.finish_time:
+            self.washer.payment += round(self.car.car_type.price / 2, 2)
+            self.washer.save()
         super(Order, self).save(*args, **kwargs)
