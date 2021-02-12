@@ -71,7 +71,14 @@ def washers(request, cw_pk):
 def cars(request, cw_pk):
     car_wash = get_object_or_404(CarWash, pk=cw_pk)
     page = request.GET.get('page', 1)
-    car_list = Car.objects.filter(car_type__car_wash_id=car_wash.id)
+    car_form = CarForm(car_wash.id)
+    q = request.GET.get('q', None)
+    if q:
+        car_list = Car.objects.filter(
+            Q(car_type__car_wash_id=car_wash.id) & Q(license_plate__icontains=q)
+        )
+    else:
+        car_list = Car.objects.filter(car_type__car_wash_id=car_wash.id)
     paginator = Paginator(car_list, 4)
     try:
         cars = paginator.page(page)
@@ -79,7 +86,6 @@ def cars(request, cw_pk):
         cars = paginator.page(1)
     except EmptyPage:
         cars = paginator.page(paginator.num_pages)
-    car_form = CarForm(car_wash.id)
     if request.method == 'POST':
         car_form = CarForm(car_wash.id, data=request.POST)
         if car_form.is_valid():
