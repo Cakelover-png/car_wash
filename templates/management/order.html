@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            {% if is_succ %}
+            <div>
+                <h4 class="center-align green-text">The operation was successful!</h5>
+            </div>
+            {% else %}
+            <div>
+                <h4 class="center-align">Place the order</h5>
+            </div>
+            {% endif %}
+            <div class="input-field col s12 ">
+                {{form.as_p}}
+                <div class="center">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}

@@ -5,7 +5,9 @@
 <head>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
+    <link rel="shortcut icon" href="#">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
@@ -14,6 +16,13 @@
 .padd {
   padding-top: 10px;
 }
+#inp_nav {
+    margin-right: 10px;
+}
+#inp_nav_mobile{
+    margin-left: 10px;
+}
+
 </style>
 
 <body>
@@ -23,14 +32,22 @@
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             <li><a href="{% url 'car_washes' %}">Car washes</a></li>
-            <li><a href="#">Order</a></li>
+            <li><form action="{% url 'car_washes' %}" method='get'>
+                    <input type="hidden" value="True" name="order">
+                    <input type="submit" class="btn" value="Order Now" id="inp_nav">
+                </form>
+            </li>
         </ul>
     </div>
 </nav>
 
 <ul class="sidenav" id="mobile-demo">
+    <li><form action="{% url 'car_washes' %}" method='get'>
+            <input type="hidden" value="True" name="order">
+            <input type="submit" class="btn" value="Order Now" id="inp_nav_mobile">
+        </form>
+    </li>
     <li><a href="{% url 'car_washes' %}">Car washes</a></li>
-    <li><a href="#">Order</a></li>
 </ul>
 
 {% block content %}

@@ -4,7 +4,10 @@
 <div class="container">
     <div class='padd'>
         <div class='align center'>
-            <a class="btn-large disabled">Order Now</a>
+            <form action="{% url 'car_washes' %}" method='get'>
+                <input type="hidden" value="True" name="order">
+                <input type="submit" class="btn-large" value="Order Now">
+            </form>
         </div>
     </div>
     <div class="row">
