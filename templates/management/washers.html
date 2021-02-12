@@ -36,26 +36,26 @@
                    <div class="card-content grey lighten-4">
                      <div id="weakly{{washer.id}}">
                          <ul>
-                             <li>Washed {{washer.weekly_washed}} car{{washer.weekly_washed|pluralize}}</li>
-                             <li>Earned ₾{{washer.weekly_pay}}</li>
+                             <li>Washed {{washer.weekly_washed|default_if_none:0}} car{{washer.weekly_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer.weekly_pay|default_if_none:0}}</li>
                          </ul>
                      </div>
                      <div id="monthly{{washer.id}}">
                          <ul>
-                             <li>Washed {{washer.monthly_washed}} car{{washer.monthly_washed|pluralize}}</li>
-                             <li>Earned ₾{{washer.monthly_pay}}</li>
+                             <li>Washed {{washer.monthly_washed|default_if_none:0}} car{{washer.monthly_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer.monthly_pay|default_if_none:0}}</li>
                          </ul>
                      </div>
                      <div id="yearly{{washer.id}}">
                          <ul>
-                             <li>Washed {{washer.yearly_washed}} car{{washer.yearly_washed|pluralize}}</li>
-                             <li>Earned ₾{{washer.yearly_pay}}</li>
+                             <li>Washed {{washer.yearly_washed|default_if_none:0}} car{{washer.yearly_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer.yearly_pay|default_if_none:0}}</li>
                          </ul>
                      </div>
                      <div id="default{{washer.id}}">
                          <ul>
-                             <li>Washed {{washer.all_washed}} car{{washer.all_washed|pluralize}}</li>
-                             <li>Earned ₾{{washer.all_pay}}</li>
+                             <li>Washed {{washer.all_washed|default_if_none:0}} car{{washer.all_washed|pluralize}}</li>
+                             <li>Earned ₾{{washer.all_pay|default_if_none:0}}</li>
                          </ul>
                      </div>
                    </div>

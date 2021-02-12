@@ -86,7 +86,7 @@ def cars(request, cw_pk):
             car_form.save()
             return render(request, 'management/cars.html',
                           context={'cars': cars,
-                                   'form': car_form,
+                                   'form': CarForm(car_wash.id),
                                    'is_succ': True,
                                    })
     return render(request, 'management/cars.html',
@@ -104,7 +104,7 @@ def order(request, cw_pk):
             order_form.save()
             return render(request, 'management/order.html',
                           context={'car_wash': car_wash,
-                                   'form': order_form,
+                                   'form': OrderForm(car_wash.id),
                                    'is_succ': True})
     return render(request, 'management/order.html',
                   context={'car_wash': car_wash,
