@@ -33,7 +33,8 @@ class CarWash(models.Model):
 
 
 class Washer(models.Model):
-    car_wash = models.ForeignKey(to='management.CarWash', on_delete=models.CASCADE)
+    car_wash = models.ForeignKey(
+        to='management.CarWash', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     personal_id = models.CharField(max_length=11, unique=True)
@@ -49,7 +50,8 @@ class Washer(models.Model):
 
 
 class CarType(models.Model):
-    car_wash = models.ForeignKey(to='management.CarWash', on_delete=models.CASCADE)
+    car_wash = models.ForeignKey(
+        to='management.CarWash', on_delete=models.CASCADE)
     type = models.IntegerField(choices=CAR_TYPES)
     price = models.DecimalField(max_digits=4, decimal_places=2)
 
@@ -62,7 +64,8 @@ class CarType(models.Model):
 
 
 class Car(models.Model):
-    car_type = models.ForeignKey(to='management.CarType', on_delete=models.PROTECT)
+    car_type = models.ForeignKey(
+        to='management.CarType', on_delete=models.PROTECT)
     license_plate = models.CharField(max_length=30)
 
     class Meta:
@@ -74,9 +77,11 @@ class Car(models.Model):
 
 
 class Order(models.Model):
-    washer = models.ForeignKey(to='management.Washer', on_delete=models.PROTECT)
+    washer = models.ForeignKey(
+        to='management.Washer', on_delete=models.PROTECT)
     car = models.ForeignKey(to='management.Car', on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(
+        max_digits=4, decimal_places=2, blank=True, null=True)
     payment_type = models.IntegerField(choices=PAYMENT_TYPES)  # for decoration
     created = models.DateTimeField(auto_now_add=True)
     finish_time = models.DateTimeField(blank=True, null=True)

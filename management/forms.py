@@ -19,15 +19,14 @@ class CarForm(ModelForm):
 
 
 class OrderForm(ModelForm):
-    car = ModelChoiceField(empty_label='Choose the car', queryset=None)
     washer = ModelChoiceField(empty_label='Choose the washer', queryset=None)
     payment_type = TypedChoiceField(choices=PAYMENT_TYPES)
 
     class Meta:
         model = Order
-        fields = ('washer', 'car', 'washer', 'payment_type')
+        fields = ('washer', 'payment_type')
 
     def __init__(self, cw_pk=None, **kwargs):
         super(OrderForm, self).__init__(**kwargs)
-        self.fields['car'].queryset = Car.objects.filter(car_type__car_wash_id=cw_pk)
+        # self.fields['car'].queryset = Car.objects.filter(car_type__car_wash_id=cw_pk)
         self.fields['washer'].queryset = Washer.objects.filter(car_wash_id=cw_pk)

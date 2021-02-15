@@ -7,30 +7,30 @@
         {% csrf_token %}
         <div class="row">
             {% if messages %}
-                {% for message in messages %}
-                    <h4{% if message.tags %} class="{{ message.tags }} center-align green-text"{% endif %}>
-                        <strong> {{ message }} </strong>
-                    </h4>
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }} center-align green-text" {% endif %}>
+                <strong> {{ message }} </strong>
+                </h4>
                 {% endfor %}
-            {% else %}
-            <div>
-                <h4 class="center-align">Create your car here</h5>
-            </div>
-            {% endif %}
-            <strong class="center-align">{{form.errors}}</strong>
-            <div class="input-field col s6 ">
-                {{form.car_type}}
-                <label>Car Type</label>
-            </div>
-            <div class="input-field col s6 ">
-                {{form.license_plate}}
-                <label for="id_license_plate">License Plate</label>
-            </div>
-            <div class="center">
-                <button class="btn waves-effect waves-light" type="submit" name="action">
-                    Submit
-                </button>
-            </div>
+                {% else %}
+                <div>
+                    <h4 class="center-align">Create your car here</h5>
+                </div>
+                {% endif %}
+                <strong class="center-align">{{form.errors}}</strong>
+                <div class="input-field col s6 ">
+                    {{form.car_type}}
+                    <label>Car Type</label>
+                </div>
+                <div class="input-field col s6 ">
+                    {{form.license_plate}}
+                    <label for="id_license_plate">License Plate</label>
+                </div>
+                <div class="center">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">
+                        Submit
+                    </button>
+                </div>
         </div>
     </form>
     <form action="" method="get">
@@ -38,7 +38,7 @@
             <div class="input-field col s4 offset-s4">
                 <input id="search_input" type="search" class="validate" name="q">
                 <label for="search_input"><i class="material-icons">search</i>
-                <label for="search_input">Search by license plate</label>
+                    <label for="search_input">Search by license plate</label>
             </div>
         </div>
         <div class="row">
@@ -50,51 +50,52 @@
         </div>
         <div class="row">
             {% if searched_count %}
-                <p>{{searched_count}} result{{searched_count|pluralize}} found<p>
-            {% elif searched_count == 0 %}
-                <p>No results found</p>
+            <p>{{searched_count}} result{{searched_count|pluralize}} found
+            <p>
+                {% elif searched_count == 0 %}
+            <p>No results found</p>
             {% endif %}
         </div>
     </form>
     {% for car in cars %}
-        {% if forloop.counter0|divisibleby:"4" %}
-        <div class="row">
+    {% if forloop.counter0|divisibleby:"4" %}
+    <div class="row">
         {% endif %}
-          <div class="col s6 m3">
+        <div class="col s6 m3">
             <div class="card red darken-4">
-              <div class="card-content white-text">
-                <span class="card-title">{{car}}</span>
-                <p>{% lorem 10 w %}</p>
-              </div>
-              <div class="card-action center">
-                <a class="black-text" href="#">Get More Details</a>
-              </div>
+                <div class="card-content white-text">
+                    <span class="card-title">{{car}}</span>
+                    <p>{% lorem 10 w %}</p>
+                </div>
+                <div class="card-action center">
+                    <a class="black-text" href="#">Get More Details</a>
+                </div>
             </div>
-          </div>
+        </div>
 
         {% if forloop.counter|divisibleby:"4" or forloop.last %}
-        </div>
+    </div>
     {% endif %}
-{% endfor %}
+    {% endfor %}
     <ul class="pagination">
         {% if cars.has_previous %}
-            <li class="waves-effect"><a href="?page={{ cars.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+        <li class="waves-effect"><a href="?page={{ cars.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
         {% else %}
-            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
         {% endif %}
         {% for i in cars.paginator.page_range %}
-             {% if cars.number == i %}
-              <li class="active"><a>{{ i }}</a></li>
-             {% else %}
-               <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
-             {% endif %}
+        {% if cars.number == i %}
+        <li class="active"><a>{{ i }}</a></li>
+        {% else %}
+        <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
         {% endfor %}
         {% if cars.has_next %}
-            <li class="waves-effect"><a href="?page={{ cars.paginator.num_pages }}"><i class="material-icons">chevron_right</i></a></li>
+        <li class="waves-effect"><a href="?page={{ cars.paginator.num_pages }}"><i class="material-icons">chevron_right</i></a></li>
         {% else %}
-            <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
         {% endif %}
-  </ul>
+    </ul>
 </div>
 
 {% endblock %}

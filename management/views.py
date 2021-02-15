@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from decimal import Decimal
 from django.db.models import Sum, Count, Q, F, ExpressionWrapper, DecimalField
 from django.shortcuts import get_object_or_404
@@ -86,7 +87,7 @@ def cars(request, cw_pk):
     if request.method == 'POST':
         car_form = CarForm(car_wash.id, data=request.POST)
         if car_form.is_valid():
-            car_form.save(commit=False)
+            car_form.save()
             car_form = CarForm(car_wash.id)
             messages.success(request, 'The operation was successful!')
     return render(request, 'management/cars.html',
@@ -101,10 +102,25 @@ def order(request, cw_pk):
     order_form = OrderForm(car_wash.id)
     if request.method == 'POST':
         order_form = OrderForm(car_wash.id, data=request.POST)
-        if order_form.is_valid():
-            order_form.save(commit=False)
+        car = Car.objects.filter(
+            Q(car_type__car_wash_id=car_wash.id) & Q(license_plate=request.POST['car'])).first()
+        if not car:
+            messages.error(
+                request, "Car with given license plate couldn't be found!")
+        elif order_form.is_valid():
+            car_form = order_form.save(commit=False)
+            car_form.car = car
+            car_form.save()
             order_form = OrderForm(car_wash.id)
             messages.success(request, 'The operation was successful!')
     return render(request, 'management/order.html',
                   context={'car_wash': car_wash,
                            'form': order_form})
+
+
+def car_json(request, cw_pk):
+    car_wash = get_object_or_404(CarWash, pk=cw_pk)
+    data = Car.objects.filter(car_type__car_wash_id=car_wash.id).values_list(
+        'license_plate', flat=True)
+
+    return JsonResponse(list(data), safe=False)

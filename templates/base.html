@@ -10,50 +10,60 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <style>
-.padd {
-  padding-top: 10px;
-}
-#inp_nav {
-    margin-right: 10px;
-}
-#inp_nav_mobile{
-    margin-left: 10px;
-}
+    .padd {
+        padding-top: 10px;
+    }
 
+    #inp_nav {
+        margin-right: 10px;
+    }
+
+    #inp_nav_mobile {
+        margin-left: 10px;
+    }
 </style>
 
 <body>
-<nav>
-    <div class="nav-wrapper green lighten-1">
-        <a href="{% url 'homepage' %}" class="brand-logo">CarWASH</a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="{% url 'car_washes' %}">Car washes</a></li>
-            <li><form action="{% url 'car_washes' %}" method='get'>
-                    <input type="hidden" value="True" name="order">
-                    <input type="submit" class="btn" value="Order Now" id="inp_nav">
-                </form>
-            </li>
-        </ul>
-    </div>
-</nav>
+    <nav>
+        <div class="nav-wrapper green lighten-1">
+            <a href="{% url 'homepage' %}" class="brand-logo">CarWASH</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{% url 'car_washes' %}">Car washes</a></li>
+                <li>
+                    <form action="{% url 'car_washes' %}" method='get'>
+                        <input type="hidden" value="True" name="order">
+                        <input type="submit" class="btn" value="Order Now" id="inp_nav">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-<ul class="sidenav" id="mobile-demo">
-    <li><form action="{% url 'car_washes' %}" method='get'>
-            <input type="hidden" value="True" name="order">
-            <input type="submit" class="btn" value="Order Now" id="inp_nav_mobile">
-        </form>
-    </li>
-    <li><a href="{% url 'car_washes' %}">Car washes</a></li>
-</ul>
+    <ul class="sidenav" id="mobile-demo">
+        <li>
+            <form action="{% url 'car_washes' %}" method='get'>
+                <input type="hidden" value="True" name="order">
+                <input type="submit" class="btn" value="Order Now" id="inp_nav_mobile">
+            </form>
+        </li>
+        <li><a href="{% url 'car_washes' %}">Car washes</a></li>
+    </ul>
 
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 
-<script src="{% static 'js/header-responsive.js' %}"></script>
+    <script src="{% static 'js/header-responsive.js' %}"></script>
 </body>
 
 </html>
