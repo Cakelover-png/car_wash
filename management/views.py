@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from decimal import Decimal
 from django.db.models import Sum, Count, Q, F, ExpressionWrapper, DecimalField
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from .models import CarWash, Order, Car
 from .forms import CarForm, OrderForm
+from django.contrib import messages
+from .utils import my_paginator
 
 
 def homepage(request):
@@ -70,34 +71,28 @@ def washers(request, cw_pk):
 
 def cars(request, cw_pk):
     car_wash = get_object_or_404(CarWash, pk=cw_pk)
-    page = request.GET.get('page', 1)
     car_form = CarForm(car_wash.id)
+    searched_count = None
+    page = request.GET.get('page', 1)
     q = request.GET.get('q', None)
     if q:
         car_list = Car.objects.filter(
             Q(car_type__car_wash_id=car_wash.id) & Q(license_plate__icontains=q)
         )
+        searched_count = car_list.count()
     else:
         car_list = Car.objects.filter(car_type__car_wash_id=car_wash.id)
-    paginator = Paginator(car_list, 4)
-    try:
-        cars = paginator.page(page)
-    except PageNotAnInteger:
-        cars = paginator.page(1)
-    except EmptyPage:
-        cars = paginator.page(paginator.num_pages)
+
     if request.method == 'POST':
         car_form = CarForm(car_wash.id, data=request.POST)
         if car_form.is_valid():
-            car_form.save()
-            return render(request, 'management/cars.html',
-                          context={'cars': cars,
-                                   'form': CarForm(car_wash.id),
-                                   'is_succ': True,
-                                   })
+            car_form.save(commit=False)
+            car_form = CarForm(car_wash.id)
+            messages.success(request, 'The operation was successful!')
     return render(request, 'management/cars.html',
-                  context={'cars': cars,
-                           'form': car_form
+                  context={'cars': my_paginator(page, car_list, 8),
+                           'form': car_form,
+                           'searched_count': searched_count,
                            })
 
 
@@ -107,11 +102,9 @@ def order(request, cw_pk):
     if request.method == 'POST':
         order_form = OrderForm(car_wash.id, data=request.POST)
         if order_form.is_valid():
-            order_form.save()
-            return render(request, 'management/order.html',
-                          context={'car_wash': car_wash,
-                                   'form': OrderForm(car_wash.id),
-                                   'is_succ': True})
+            order_form.save(commit=False)
+            order_form = OrderForm(car_wash.id)
+            messages.success(request, 'The operation was successful!')
     return render(request, 'management/order.html',
                   context={'car_wash': car_wash,
                            'form': order_form})

@@ -6,10 +6,12 @@
     <form action="" method="post">
         {% csrf_token %}
         <div class="row">
-            {% if is_succ %}
-            <div>
-                <h4 class="center-align green-text">The operation was successful</h5>
-            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <h4{% if message.tags %} class="{{ message.tags }} center-align green-text"{% endif %}>
+                        <strong> {{ message }} </strong>
+                    </h4>
+                {% endfor %}
             {% else %}
             <div>
                 <h4 class="center-align">Create your car here</h5>
@@ -45,6 +47,13 @@
                     Search
                 </button>
             </div>
+        </div>
+        <div class="row">
+            {% if searched_count %}
+                <p>{{searched_count}} result{{searched_count|pluralize}} found<p>
+            {% elif searched_count == 0 %}
+                <p>No results found</p>
+            {% endif %}
         </div>
     </form>
     {% for car in cars %}

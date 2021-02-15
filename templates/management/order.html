@@ -8,10 +8,12 @@
     {% csrf_token %}
     <div class="container">
         <div class="row">
-            {% if is_succ %}
-            <div>
-                <h4 class="center-align green-text">The operation was successful!</h5>
-            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <h4{% if message.tags %} class="{{ message.tags }} center-align green-text"{% endif %}>
+                        <strong> {{ message }} </strong>
+                    </h4>
+                {% endfor %}
             {% else %}
             <div>
                 <h4 class="center-align">Place the order</h5>
