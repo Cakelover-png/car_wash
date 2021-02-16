@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from decimal import Decimal
 from django.db.models import Sum, Count, Q, F, ExpressionWrapper, DecimalField
 from django.shortcuts import get_object_or_404
@@ -119,8 +119,8 @@ def order(request, cw_pk):
 
 
 def car_json(request, cw_pk):
-    car_wash = get_object_or_404(CarWash, pk=cw_pk)
-    data = Car.objects.filter(car_type__car_wash_id=car_wash.id).values_list(
-        'license_plate', flat=True)
-
-    return JsonResponse(list(data), safe=False)
+    if request.method == 'POST':
+        data = Car.objects.filter(car_type__car_wash_id=cw_pk).values_list(
+            'license_plate', flat=True)
+        return JsonResponse(list(data), safe=False)
+    return HttpResponse(status=404)

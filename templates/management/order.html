@@ -41,8 +41,11 @@
 <script>
     var endpoint = '/car_json/{{car_wash.id}}';
     $.ajax({
-        method: "GET",
+        method: "POST",
         url: endpoint,
+        data: {
+            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+        },
         success: function(src) {
             $("#car_license_plate").autocomplete({
                 source: function(request, response) {
