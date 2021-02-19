@@ -79,7 +79,7 @@
     {% endfor %}
     <ul class="pagination">
         {% if cars.has_previous %}
-        <li class="waves-effect"><a href="?page={{ cars.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+        <li class="waves-effect"><a href="?page={{ cars.previous_page_number }}&q={{request.GET.q}}"><i class="material-icons">chevron_left</i></a></li>
         {% else %}
         <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
         {% endif %}
@@ -87,11 +87,11 @@
         {% if cars.number == i %}
         <li class="active"><a>{{ i }}</a></li>
         {% else %}
-        <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+        <li class="waves-effect"><a href="?page={{ i }}&q={{request.GET.q}}">{{ i }}</a></li>
         {% endif %}
         {% endfor %}
         {% if cars.has_next %}
-        <li class="waves-effect"><a href="?page={{ cars.paginator.num_pages }}"><i class="material-icons">chevron_right</i></a></li>
+        <li class="waves-effect"><a href="?page={{ cars.paginator.num_pages }}&q={{request.GET.q}}"><i class="material-icons">chevron_right</i></a></li>
         {% else %}
         <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
         {% endif %}

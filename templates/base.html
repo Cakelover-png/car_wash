@@ -46,6 +46,22 @@
                         <input type="submit" class="btn" value="Order Now" id="inp_nav">
                     </form>
                 </li>
+                {% if request.user.is_authenticated %}
+                <li id="inp_nav">{{request.user.email}}</li>
+                <li>
+                    <form action="{% url 'logout' %}" method='post'>
+                        {% csrf_token %}
+                        <input type="submit" class="btn" value="Logout" id="inp_nav">
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <form action="{% url 'register' %}" method='get'>
+                        <input type="submit" class="btn" value="Register" id="inp_nav">
+                    </form>
+                </li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -57,6 +73,22 @@
                 <input type="submit" class="btn" value="Order Now" id="inp_nav_mobile">
             </form>
         </li>
+        {% if request.user.is_authenticated %}
+        <li id="inp_nav_mobile">{{request.user.email}}</li>
+        <li id="inp_nav_mobile"><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+        <li>
+            <form action="{% url 'register' %}" method='get'>
+                <input type="submit" class="btn" value="Register" id="inp_nav_mobile">
+            </form>
+        </li>
+        <li>
+            <form action="{% url 'logout' %}" method='post'>
+                {% csrf_token %}
+                <input type="submit" class="btn" value="Logout" id="inp_nav_mobile">
+            </form>
+        </li>
+        {% endif %}
         <li><a href="{% url 'car_washes' %}">Car washes</a></li>
     </ul>
 
